@@ -2,7 +2,7 @@
   "name": "dsh-recycle-bin",
   "version": "1.4.0",
   "type": "module",
-  "description": "Delete DSH sessions into a restorable recycle bin — sidebar panel + settings page, a red Session row menu entry, batch archive/delete, bulk restore/purge with per-row checkboxes, a right-click \"empty the bin\" action, and a delete_session agent tool. · DSH 会话回收站：侧栏图标与设置页双入口、红色删除菜单项、工作区批量归档/删除、勾选批量恢复/彻底删除、侧栏图标右键清空回收站，以及 delete_session 工具。",
+  "description": "Delete DSH sessions into a restorable recycle bin — subagent sessions follow their parent as one tree, and only purge destroys bytes.",
   "license": "MIT",
   "icon": "./icon.svg",
   "keywords": [
@@ -30,7 +30,8 @@
     "locale/*.json",
     "icon.svg",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "screenshots.json"
   ],
   "dsh": {
     "bundle": {

@@ -1,0 +1,19 @@
+# Submission draft for awesome-dsh-plugin. Not part of the plugin's published
+# package (`files` in package.json does not include this directory); it lives
+# here so the entry can be reviewed before it is proposed upstream.
+#
+#   cp this file to  data/plugins/WangLemna__dsh-recycle-bin.yml  in a fork
+#
+# Gate requirements this entry must satisfy (scripts/check-submission.mjs):
+#   - `url` is the exact repo address, and the filename matches slugFor(url)
+#   - `name` names the repository the link goes to (`owner/repo`)
+#   - `category` is one of the 26 valid ids
+#   - `description.en` is a single line ending with a period; `: ` needs quoting
+#   - only url / name / category / description / tarball are declared
+#   - repo declares `dsh.bundle`, is >= 1 day old, has >= 10 commits
+url: https://github.com/WangLemna/dsh-recycle-bin
+name: WangLemna/dsh-recycle-bin
+category: session
+description:
+  en: 'Delete sessions into a restorable recycle bin: subagent sessions follow their parent as one tree, so a whole subtree moves, restores and purges together.'
+  zh: 把会话删除到可恢复的回收站：子会话跟随主会话整树移入、恢复、销毁，删除前会先说明带上几个子会话。
