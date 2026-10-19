@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Session Recycle Bin",
+    "description": "Deletes sessions into a restorable recycle bin. Subagent sessions follow their parent: the whole tree moves, restores and is purged together, and both confirmation dialogs state how many subagent sessions travel with it. Also ships a sidebar panel plus a settings page, a red Session row menu entry, per-Workspace batch archive/delete, tick-and-act bulk restore/purge on the bin page, a right-click clear action on the sidebar entry, and a delete_session tool."
+  }
+}

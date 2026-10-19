@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Local environment and secrets
+.env
+.env.*
+*.local
+
+# Logs and crash dumps
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Build output and caches
+dist/
+build/
+.cache/
+*.tsbuildinfo
+
+# Editor and OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Scratch dumps and local inspection artifacts
+.tmp-dsh-inspect/
+tmp/
+*.bak

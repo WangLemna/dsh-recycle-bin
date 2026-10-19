@@ -1,0 +1,58 @@
+{
+  "name": "dsh-recycle-bin",
+  "version": "1.4.0",
+  "type": "module",
+  "description": "Delete DSH sessions into a restorable recycle bin — sidebar panel + settings page, a red Session row menu entry, batch archive/delete, bulk restore/purge with per-row checkboxes, a right-click \"empty the bin\" action, and a delete_session agent tool. · DSH 会话回收站：侧栏图标与设置页双入口、红色删除菜单项、工作区批量归档/删除、勾选批量恢复/彻底删除、侧栏图标右键清空回收站，以及 delete_session 工具。",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "keywords": [
+    "deepseek",
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "session",
+    "recycle-bin",
+    "session-management",
+    "workspace"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-workspace"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WangLemna/dsh-recycle-bin.git",
+    "directory": "."
+  },
+  "homepage": "https://github.com/WangLemna/dsh-recycle-bin#readme",
+  "bugs": "https://github.com/WangLemna/dsh-recycle-bin/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

@@ -1,0 +1,8 @@
+# Bundle layer for the session recycle bin: inserts the Host half.
+#
+# The Client half is discovered from this package's own `dsh.client` manifest,
+# so one row is enough. The row id is also the plugin's Config address: users
+# override it by id in the profile's cordis.patch.yml.
+- insert:
+    - id: session-recycle-bin
+      name: 'dsh-recycle-bin'
