@@ -552,13 +552,16 @@ Dark 主题下的截图对比。**1.3.2 的层序修复（对话框 portal 到 b
 ## 目录结构
 
 ```
-package.json          清单：name（dsh-recycle-bin）+ dsh.bundle.patch + dsh.client + repository / publishConfig
+package.json          清单：name（dsh-recycle-bin）+ engines.dsh + peerDependencies + dsh.bundle.patch + dsh.client + repository / publishConfig
 cordis.patch.yml      插入 Host 半的一行（row id: session-recycle-bin，name = 包名）
 index.js              Host 半：服务 + HTTP 路由 + delete_session 工具（preview / 子会话整树 trash / trashMany / archiveMany / restoreMany / purgeMany）
 client.js             Client 半：Module Loader 工厂，五个槽位的九个注册（菜单两行 / 四个浮层 / 侧栏图标 / main 面板 / 设置页），三个确认框带子会话计数
 lib/session-paths.js  与 jsonl 后端一致的目录名推导（encodeSegment / projectKey）
 locale/{zh,en}.json   插件管理页的标题与描述
 icon.svg              插件图标（原创 SVG）
+screenshots.json      市场卡片要展示的截图（docs/assets/*.jpg）
+docs/assets/*.jpg     截图本体
+awesome-dsh-plugin-submission/  市场条目草稿，**不进 npm 包**
 README.md             本文件
 LICENSE               MIT
 .gitignore            忽略 node_modules / .env / 日志 / 编辑器与系统噪声
@@ -577,7 +580,9 @@ LICENSE               MIT
 | 套件 | 覆盖什么 |
 | --- | --- |
 | `verify-paths.mjs` | 目录名推导与真实会话目录逐一对照（含反向解码） |
-| `validate-bundle.mjs` | 清单、exports、locale、图标、补丁、无 postinstall、只用主题 token、**hover 不许用表面 token** |
+| `validate-bundle.mjs` | 清单、exports、locale、图标、补丁、无 postinstall、只用主题 token、**hover 不许用表面 token**、**包名无 scope 且非 private 且有 repository** |
+| `check-host-range.mjs` | `engines.dsh` 与每个 peer 区间对着本机宿主版本逐条求值；**每个 lockstep 区间都必须显式带 prerelease tag**（否则静默排除预发布） |
+| `check-submission-draft.mjs` | market 条目草稿的字段形状、`slugFor(url)` 文件名、分类合法性、描述单行/句号/160 字符；`screenshots.json` 的路径与主机白名单 |
 | `test-bin.mjs` | trash/list/restore/purge/purgeAll + 回滚 + 拒绝码（运行中 / 排队 / 活动提供方 / 子会话） + 准入失败还原 + **trashMany / archiveMany 的批量部分失败、去重、空表/超长/穿越 id** + **restoreMany 的冲突隔离与 purgeMany 的部分失败/未知条目** + **子会话整树的 trash/restore/purge/冲突/孤儿/preview** + 语料列表过滤器与隐藏集生命周期 |
 | `test-mirror.mjs` | 真实 `$DSH_HOME` 的映射拷贝上，挑一个带真实子会话的根会话做完整删除→恢复，校验父与全部子会话的字节数 |
 | `test-client.mjs` | Client 半在 React shim 下渲染全部座位，校验跨 slot 请求链路、红色 token、批量面板交互、`main` key 与侧栏 id 一致、文案覆盖（含 `batch.*` 与 `error.*`）；用到带 `fetch` 双 + 可跑 effect 的 mount 真跑：回收站页勾选→批量恢复/彻底删除（含确认前不发请求）、侧栏右键→清空确认框→`purgeAll`、三个对话框的**子会话计数**与回收站行的「附 N 个子会话」、hover token 断言 |
@@ -604,6 +609,26 @@ plugin_manager { action: "install_bundle", target: "<本目录绝对路径>" }
 `validate-bundle.mjs` 逐条钉住这一点。
 
 卸载用 `remove_bundle`；回收站里尚未恢复的条目会留在 `~/.dsh/session-recycle-bin`。
+
+### 版本兼容
+
+宿主要求声明在两处，`dsh-market` 的「按宿主发现」都读：
+
+| 声明 | 值 |
+| --- | --- |
+| `engines.dsh` | `0.2.0-rc.1 \|\| 0.2.0-rc.2 \|\| 0.2.1-rc.1 \|\| 0.2.1-rc.2` |
+| `peerDependencies` | 9 个 `@deepseek-ai/dsh-*` 包，同样的 `0.2.x-rc.*` 区间 + `@deepseek-ai/cordis ~4.0.5` |
+
+**0.2 与 0.1 的插件 API 不兼容**（`settings` API 在 0.2 被移除），所以下限钉在 0.2.0-rc.1，
+不用宽泛的 `>=0.1 <0.3`——那种写法会因为 node-semver 的 prerelease 规则静默排除掉
+0.1.x 的预发布版本，用户装的时候只会看到一个没有解释的 `ERESOLVE`。
+
+每个 peer 区间都对着**真实宿主**逐条校验（`check-host-range.mjs` 读 asar 里各包的
+`peerDependencies`，而不是照抄别家插件的值）；`@deepseek-ai/cordis` 与
+`schemastery` 是 4.x / 3.x 的独立版本线，不在 DSH 的 lockstep 0.x 线上，
+因此不参与 DSH 版本的判定。
+
+本机实测：`0.2.1-rc.2` + `@deepseek-ai/cordis@4.0.5`。
 
 ## 手动恢复（插件不在时的兜底）
 
