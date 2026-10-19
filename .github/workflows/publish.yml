@@ -1,0 +1,61 @@
+# Publish dsh-recycle-bin to npm through Trusted Publishing.
+#
+# There is no NPM_TOKEN here, and that is deliberate: Trusted Publishing
+# authenticates with a short-lived OIDC identity token GitHub mints for this
+# workflow run, and npm verified that identity against the publisher settings
+# on the package. A stored token would be one more credential to rotate, and
+# setting NODE_AUTH_TOKEN here would put the run back on the old path.
+#
+# npm requires the publisher's "Workflow filename" to match this file's name
+# exactly — if this file is renamed, the package settings must be updated to
+# match or every publish is rejected.
+#
+# Triggered by publishing a GitHub Release, so the tag (vX.Y.Z) is the version
+# the world sees and the one npm receives. `workflow_dispatch` is the manual
+# escape hatch for republishing after a failed run.
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Required: without this the run cannot request the OIDC token at all.
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # setup-node pins whatever npm ships with that Node line. Trusted
+      # Publishing needs npm >= 11.5.1, so ask for the newest npm explicitly
+      # rather than depending on the image's bundled version.
+      - run: npm install -g npm@latest
+      - run: npm --version
+
+      # The manifest's name/version is the published identity. A tag that
+      # disagrees with it would publish something other than what the release
+      # notes describe, so refuse before touching the registry.
+      - name: Check the tag matches package.json
+        if: github.event_name == 'release'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+          echo "publishing version $version"
+
+      # No --access flag: publishConfig.access is already "public" in the
+      # manifest, and the flag would only restate it.
+      - run: npm publish

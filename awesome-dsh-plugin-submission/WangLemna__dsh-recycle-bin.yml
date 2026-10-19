@@ -10,7 +10,7 @@
 #   - `category` is one of the 26 valid ids
 #   - `description.en` is a single line ending with a period; `: ` needs quoting
 #   - only url / name / category / description / tarball are declared
-#   - repo declares `dsh.bundle`, is >= 1 day old, has >= 10 commits
+#   - repo declares `dsh.bundle`, is >= 1 day old
 url: https://github.com/WangLemna/dsh-recycle-bin
 name: WangLemna/dsh-recycle-bin
 category: session
