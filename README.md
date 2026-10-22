@@ -20,7 +20,7 @@ DSH 没有删除会话的接口。本插件把它补上，并且做成两步：*
 
 ## 安装
 
-插件已在 npm 发布为 **`dsh-recycle-bin`**，并已收录进 DSH 插件市场。
+插件已在 npm 发布为 **`dsh-recycle-bin`**。
 
 ```powershell
 dsh plugin --profile <profile> add dsh-recycle-bin
