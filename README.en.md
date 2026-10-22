@@ -20,7 +20,7 @@ There are many ways to delete a session. This plugin was designed around three r
 
 ## Install
 
-The plugin is published on npm as **`dsh-recycle-bin`**, and it is listed in the DSH plugin market.
+The plugin is published on npm as **`dsh-recycle-bin`**.
 
 ```powershell
 dsh plugin --profile <profile> add dsh-recycle-bin
