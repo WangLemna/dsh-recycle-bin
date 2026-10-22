@@ -15,5 +15,5 @@ url: https://github.com/WangLemna/dsh-recycle-bin
 name: WangLemna/dsh-recycle-bin
 category: session
 description:
-  en: 'Delete sessions into a restorable recycle bin: subagent sessions follow their parent as one tree, so a whole subtree moves, restores and purges together.'
-  zh: 把会话删除到可恢复的回收站：子会话跟随主会话整树移入、恢复、销毁，删除前会先说明带上几个子会话。
+  en: Delete DSH sessions into a restorable recycle bin — subagent sessions follow their parent as one tree, batch archive, restore and purge are supported, and only purge destroys bytes.
+  zh: 把 DSH 会话删入可恢复的回收站——子会话随其父会话作为一棵树处理，支持批量归档、恢复与彻底删除，只有彻底清除才会真正销毁数据。
